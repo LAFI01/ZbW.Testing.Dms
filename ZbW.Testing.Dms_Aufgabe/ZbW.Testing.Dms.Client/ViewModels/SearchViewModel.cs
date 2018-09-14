@@ -1,4 +1,9 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using System;
+using System.Windows.Controls;
+using System.Windows.Data;
+using ZbW.Testing.Dms.Client.Services;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System.Collections.Generic;
 
@@ -19,6 +24,7 @@
         private string _suchbegriff;
 
         private List<string> _typItems;
+      private FileSystemService _fileSystemService;
 
         public SearchViewModel()
         {
@@ -27,6 +33,7 @@
             CmdSuchen = new DelegateCommand(OnCmdSuchen);
             CmdReset = new DelegateCommand(OnCmdReset);
             CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
+          _fileSystemService = new FileSystemService();
         }
 
         public DelegateCommand CmdOeffnen { get; }
@@ -34,6 +41,9 @@
         public DelegateCommand CmdSuchen { get; }
 
         public DelegateCommand CmdReset { get; }
+
+      public string Typ { get; set; }
+      public string Bezeichnung { get; set; }
 
         public string Suchbegriff
         {
@@ -105,12 +115,16 @@
 
         private bool OnCanCmdOeffnen()
         {
-            return SelectedMetadataItem != null;
+          var meta = _fileSystemService.LoadMetadata();
+          SelectedMetadataItem = meta[0];
+          Bezeichnung = SelectedMetadataItem.ContentFilename;
+          return SelectedMetadataItem != null;
         }
 
         private void OnCmdOeffnen()
         {
-            // TODO: Add your Code here
+         
+          
         }
 
         private void OnCmdSuchen()

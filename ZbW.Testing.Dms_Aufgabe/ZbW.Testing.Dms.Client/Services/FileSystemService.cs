@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -62,6 +63,21 @@ namespace ZbW.Testing.Dms.Client.Services
           MessageBox.Show(e.Message);
         }
       }
+    }
+
+    public List<MetadataItem> LoadMetadata()
+    {
+      var metadataFile = Directory.GetFiles(TargetPath + @"\2018", "*_Metadata.xml");
+      List<MetadataItem> meta = new List<MetadataItem>();
+      foreach (var mf in metadataFile)
+      {
+        var xmlSerializer = new XmlSerializer(typeof(MetadataItem));
+        var streamReader = new StreamReader(mf);
+         var m = (MetadataItem) xmlSerializer.Deserialize(streamReader);
+       meta.Add(m);
+      }
+
+      return meta;
     }
   }
 }
