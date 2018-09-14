@@ -1,4 +1,8 @@
-﻿namespace ZbW.Testing.Dms.Client.ViewModels
+﻿using System.Windows;
+using ZbW.Testing.Dms.Client.Model;
+using ZbW.Testing.Dms.Client.Services;
+
+namespace ZbW.Testing.Dms.Client.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +14,7 @@
 
     using ZbW.Testing.Dms.Client.Repositories;
 
-    internal class DocumentDetailViewModel : BindableBase
+    public class DocumentDetailViewModel : BindableBase
     {
         private readonly Action _navigateBack;
 
@@ -31,6 +35,8 @@
         private List<string> _typItems;
 
         private DateTime? _valutaDatum;
+      private IFileSystemService _fileSystemService;
+      private MetadataItem _metadataItem;
 
         public DocumentDetailViewModel(string benutzer, Action navigateBack)
         {
@@ -41,7 +47,9 @@
 
             CmdDurchsuchen = new DelegateCommand(OnCmdDurchsuchen);
             CmdSpeichern = new DelegateCommand(OnCmdSpeichern);
-        }
+          _fileSystemService = new FileSystemService();
+        
+    }
 
         public string Stichwoerter
         {
@@ -162,11 +170,26 @@
             }
         }
 
-        private void OnCmdSpeichern()
+    private void OnCmdSpeichern()
+      {
+        if (CheckRequiredFields() && _filePath != null)
         {
-            // TODO: Add your Code here
-
-            _navigateBack();
+          _metadataItem = new MetadataItem(this);
+          _fileSystemService.AddFile(_metadataItem, IsRemoveFileEnabled, _filePath);
+          _navigateBack();
         }
-    }
+        else
+        {
+          MessageBox.Show("Es müssen alle Pflichtfelder ausgewählt werden");
+        }
+      }
+
+      private bool CheckRequiredFields()
+      {
+        var bezeichnung = !string.IsNullOrEmpty(this.Bezeichnung);
+        var valutaDatum = !string.IsNullOrEmpty(this.ValutaDatum.ToString());
+        var selectedTypItem = !string.IsNullOrEmpty(this.SelectedTypItem);
+        return bezeichnung && valutaDatum && selectedTypItem;
+      }
+  }
 }
