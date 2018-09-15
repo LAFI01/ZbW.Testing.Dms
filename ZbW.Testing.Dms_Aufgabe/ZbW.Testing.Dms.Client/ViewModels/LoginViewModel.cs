@@ -28,7 +28,12 @@
         {
             get
             {
-                return _benutzername;
+              if (string.IsNullOrEmpty(_benutzername))
+              {
+                return Properties.Settings.Default.Username;
+              }
+
+              return _benutzername;
             }
 
             set
