@@ -32,6 +32,7 @@ namespace ZbW.Testing.Dms.Client.Services
       metadataItem.MetadataFilename = metadataFilename;
       metadataItem.DocumentId = documentId;
       metadataItem.RepoYear = year.ToString();
+      metadataItem.PathInRepo = targetDir + @"\" + contentFileName;
 
 
       var xmlSerializer = new XmlSerializer(typeof(MetadataItem));

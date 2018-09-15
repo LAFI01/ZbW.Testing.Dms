@@ -18,9 +18,12 @@ namespace ZbW.Testing.Dms.Client.Model
         if (documentDetailViewModel.ValutaDatum != null)
         {
           ValutaDatum = documentDetailViewModel.ValutaDatum.GetValueOrDefault();
+          Bezeichnung = documentDetailViewModel.Bezeichnung;
+          Typ = documentDetailViewModel.SelectedTypItem;
+          Stichwoerter = documentDetailViewModel.Stichwoerter;
         }
       }
-
+    
     public string ContentFileExtension { get; set; }
       public string OrginalPath { get; set; }
       public string ContentFilename { get; set; }
@@ -28,5 +31,10 @@ namespace ZbW.Testing.Dms.Client.Model
       public Guid DocumentId { get; set; }
       public DateTime ValutaDatum { get; set; }
       public string RepoYear { get; set; }
+
+      public string Typ { get; set; }
+      public string Bezeichnung { get; set; }
+      public string Stichwoerter { get; set; }
+      public string PathInRepo { get; set; }
   }
 }

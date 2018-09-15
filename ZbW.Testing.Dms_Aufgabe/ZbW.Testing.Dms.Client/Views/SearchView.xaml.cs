@@ -13,6 +13,8 @@
         {
             InitializeComponent();
             DataContext = new SearchViewModel();
+
         }
-    }
+
+  }
 }

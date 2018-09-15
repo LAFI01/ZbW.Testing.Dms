@@ -63,7 +63,8 @@
       Grid.Row="1"
       AutoGenerateColumns="false"
       ItemsSource="{Binding FilteredMetadataItems}"
-      SelectedItem="{Binding SelectedMetadataItem}">
+      SelectedItem="{Binding SelectedMetadataItem}"
+      x:Name ="_dataGrid">
       <!--  TODO: Remove AutoGenerateColumns="True" and specify your own columns  -->
       <DataGrid.Columns>
         <DataGridTextColumn Binding="{Binding Typ}" Header="Typ" />
