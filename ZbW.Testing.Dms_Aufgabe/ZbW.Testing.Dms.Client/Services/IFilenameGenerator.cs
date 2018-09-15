@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZbW.Testing.Dms.Client.Model;
 
 namespace ZbW.Testing.Dms.Client.Services
 {
-  public interface IFileSystemService
+  public interface IFilenameGenerator
   {
+    string GetMetadataFilename(Guid guid);
 
-    void AddFile(MetadataItem metadataItem, bool deleteFile, string sourcePath);
+    string GetContentFilename(Guid guid, string extension);
   }
 }

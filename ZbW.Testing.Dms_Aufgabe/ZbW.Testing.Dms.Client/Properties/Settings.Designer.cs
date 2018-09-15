@@ -26,12 +26,12 @@ namespace ZbW.Testing.Dms.Client.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Larissa")]
-        public string Username {
+        public string DefaultUser {
             get {
-                return ((string)(this["Username"]));
+                return ((string)(this["DefaultUser"]));
             }
             set {
-                this["Username"] = value;
+                this["DefaultUser"] = value;
             }
         }
     }

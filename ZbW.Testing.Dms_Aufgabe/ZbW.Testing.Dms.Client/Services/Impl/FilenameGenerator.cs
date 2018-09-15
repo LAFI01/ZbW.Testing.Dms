@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZbW.Testing.Dms.Client.Services
+namespace ZbW.Testing.Dms.Client.Services.Impl
 {
-  public class FilenameGenerator
+  public class FilenameGenerator : IFilenameGenerator
   {
     public string GetContentFilename(Guid guid, string extension)
     {

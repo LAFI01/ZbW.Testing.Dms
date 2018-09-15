@@ -70,11 +70,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\IMetadataItem.cs" />
     <Compile Include="Model\MetadataItem.cs" />
     <Compile Include="Repositories\ComboBoxItems.cs" />
-    <Compile Include="Services\FilenameGenerator.cs" />
-    <Compile Include="Services\FileSystemService.cs" />
-    <Compile Include="Services\IFileSystemService.cs" />
+    <Compile Include="Services\IFilenameGenerator.cs" />
+    <Compile Include="Services\Impl\FilenameGenerator.cs" />
+    <Compile Include="Services\Impl\FileSystemService.cs" />
+    <Compile Include="Services\Impl\XmlService.cs" />
+    <Compile Include="Services\IXmlService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\DocumentDetailViewModel.cs" />

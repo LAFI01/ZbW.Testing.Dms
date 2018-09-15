@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Security.Cryptography;
 using System.Windows.Controls;
 using Prism.Commands;
 using Prism.Mvvm;
 using ZbW.Testing.Dms.Client.Model;
 using ZbW.Testing.Dms.Client.Repositories;
 using ZbW.Testing.Dms.Client.Services;
+using ZbW.Testing.Dms.Client.Services.Impl;
 
 namespace ZbW.Testing.Dms.Client.ViewModels
 {
   internal class SearchViewModel : BindableBase
   {
     private FileSystemService _fileSystemService;
-    private ObservableCollection<MetadataItem> _filteredMetadataItems;
-    private MetadataItem _selectedMetadataItem;
+    private ObservableCollection<IMetadataItem> _filteredMetadataItems;
+    private IMetadataItem _selectedMetadataItem;
 
     private string _selectedTypItem;
 
@@ -30,7 +32,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
       CmdReset = new DelegateCommand(OnCmdReset);
       CmdOeffnen = new DelegateCommand(OnCmdOeffnen, OnCanCmdOeffnen);
       _fileSystemService = new FileSystemService();
-      _filteredMetadataItems = new ObservableCollection<MetadataItem>();
+      _filteredMetadataItems = new ObservableCollection<IMetadataItem>();
       ShowData();
       
     }
@@ -56,13 +58,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
     {
       get { return _typItems; }
 
-      set
-      {
-        if(SetProperty(ref _typItems, value))
-        {
-          //CmdSuchen.RaiseCanExecuteChanged();
-        }
-      }
+      set { SetProperty(ref _typItems, value); }
     }
 
     public string SelectedTypItem
@@ -78,7 +74,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
       }
     }
 
-    public ObservableCollection<MetadataItem> FilteredMetadataItems
+    public ObservableCollection<IMetadataItem> FilteredMetadataItems
     {
       get { return _filteredMetadataItems; }
 
@@ -90,7 +86,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
       }
     }
 
-    public MetadataItem SelectedMetadataItem
+    public IMetadataItem SelectedMetadataItem
     {
       get { return _selectedMetadataItem; }
 
@@ -113,7 +109,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
       }
     }
 
-    private bool OnCanCmdOeffnen()
+    public bool OnCanCmdOeffnen()
     {
       return SelectedMetadataItem != null;
     }
@@ -126,14 +122,14 @@ namespace ZbW.Testing.Dms.Client.ViewModels
       process.Start();
     }
 
-    private bool OnCanCmdSuchen()
+    public bool OnCanCmdSuchen()
     {
       return (Suchbegriff != null && SelectedTypItem != null);
     }
 
-    private void OnCmdSuchen()
+    public void OnCmdSuchen()
     {
-      var tempList = new List<MetadataItem>();
+      var tempList = new List<IMetadataItem>();
       foreach (var m in FilteredMetadataItems)
       {
         if (m.Bezeichnung.ToLower().Equals(Suchbegriff.ToLower()) || m.Stichwoerter.ToLower().Equals(Suchbegriff.ToLower()) || m.Typ.Equals(SelectedTypItem))
@@ -145,7 +141,7 @@ namespace ZbW.Testing.Dms.Client.ViewModels
       FilteredMetadataItems.AddRange(tempList);
     }
 
-    private void OnCmdReset()
+    public void OnCmdReset()
     {
       FilteredMetadataItems.Clear();
       Suchbegriff = null;
