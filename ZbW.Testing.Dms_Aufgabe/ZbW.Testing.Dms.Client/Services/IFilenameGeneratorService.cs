@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZbW.Testing.Dms.Client.Services
 {
-  public interface IFilenameGenerator
+  public interface IFilenameGeneratorService
   {
     string GetMetadataFilename(Guid guid);
 

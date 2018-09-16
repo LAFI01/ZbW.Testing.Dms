@@ -11,24 +11,24 @@ namespace ZbW.Testing.Dms.Client.Services.Impl
   public class FileSystemService
   {
     private const  string TargetPath = @"C:\Temp\DMS";
-    private static readonly IList<string> DirectoryFolder = new List<string>();
 
     public FileSystemService()
     {
       XmlService = new XmlService();
-      FilenameGenerator = new FilenameGenerator();
+      FilenameGeneratorService = new FilenameGeneratorServiceService();
+      DirectoryService = new DirectoryService();
     }
 
-    public FileSystemService(IXmlService xmlService, IFilenameGenerator filenameGenerator,
-      IList<string> directoryFolder)
+    public FileSystemService(IXmlService xmlService, IFilenameGeneratorService filenameGeneratorService, IDirectoryService directoryService)
     {
       XmlService = xmlService;
-      FilenameGenerator = filenameGenerator;
+      FilenameGeneratorService = filenameGeneratorService;
+      DirectoryService = directoryService;
     }
 
     private IXmlService XmlService { get; }
-    private IFilenameGenerator FilenameGenerator { get; }
-
+    private IFilenameGeneratorService FilenameGeneratorService { get; }
+    private IDirectoryService DirectoryService { get; }
     private IMetadataItem MetaDataIteam { get; set; }
 
     public void AddFile(IMetadataItem metadataItem, bool isRemoveFileEnabled, string sourcePath)
@@ -36,23 +36,22 @@ namespace ZbW.Testing.Dms.Client.Services.Impl
       MetaDataIteam = metadataItem;
 
       var documentId = Guid.NewGuid();
-      var extension = Path.GetExtension(sourcePath);
-      var contentFileName = FilenameGenerator.GetContentFilename(documentId, extension);
-      var metadataFilename = FilenameGenerator.GetMetadataFilename(documentId);
+      var extension = DirectoryService.GetExtension(sourcePath);
+      MetaDataIteam.ContentFilename = FilenameGeneratorService.GetContentFilename(documentId, extension);
+      MetaDataIteam.MetadataFilename = FilenameGeneratorService.GetMetadataFilename(documentId);
 
-      var targetDir = Path.Combine(TargetPath, MetaDataIteam.ValutaYear);
+      var targetDir = DirectoryService.Combine(TargetPath, MetaDataIteam.ValutaYear);
 
       MetaDataIteam.OrginalPath = sourcePath;
-      MetaDataIteam.PathInRepo = targetDir + @"\" + contentFileName;
+      MetaDataIteam.PathInRepo = targetDir + @"\" + MetaDataIteam.ContentFilename;
       MetaDataIteam.ContentFileExtension = extension;
-      MetaDataIteam.ContentFilename = contentFileName;
-      MetaDataIteam.MetadataFilename = metadataFilename;
+      MetaDataIteam.ContentFilename = MetaDataIteam.ContentFilename;
       MetaDataIteam.DocumentId = documentId;
 
-      CreateDirectoryFolder(targetDir);
+      DirectoryService.CreateDirectoryFolder(targetDir);
 
       XmlService.MetadataItemToXml(MetaDataIteam, targetDir);
-      DeleteFile(MetaDataIteam, isRemoveFileEnabled);
+      DirectoryService.DeleteFile(MetaDataIteam, isRemoveFileEnabled);
     }
 
     public IList<IMetadataItem> LoadMetadata()
@@ -65,43 +64,31 @@ namespace ZbW.Testing.Dms.Client.Services.Impl
     private IList<string> GetAllFiles()
     {
       var metadataFile = new List<string>();
-      foreach (var d in DirectoryFolder)
+      var nameOfAllSubFolder = GetAllSubFolder();
+      foreach (var d in nameOfAllSubFolder)
       {
-        var path = TargetPath + @"\" + d + @"\*_Metadata.xml";
-        var list = Directory.GetFiles(TargetPath + @"\" + d, @"*_Metadata.xml");
+     
+        var list = DirectoryService.GetFiles(TargetPath + @"\" + d, @"*_Metadata.xml");
         metadataFile.AddRange(list);
       }
 
       return metadataFile;
     }
 
-    private void CreateDirectoryFolder(string targetDir)
+    private IList<string> GetAllSubFolder()
     {
-      if (!Directory.Exists(targetDir))
+      var nameOfAllSubFolder = new List<string>();
+      var subFolder = DirectoryService.GetSubFolder(TargetPath);
+      foreach (var n in subFolder)
       {
-        Directory.CreateDirectory(targetDir);
-        DirectoryFolder.Add(MetaDataIteam.ValutaYear);
+       nameOfAllSubFolder.Add(n.Name);
       }
+
+      return nameOfAllSubFolder;
     }
 
-    private void DeleteFile(IMetadataItem metadataItem, bool deleteFile)
-    {
-      if (deleteFile)
-      {
-        var task = Task.Factory.StartNew(() =>
-        {
-          Task.Delay(500);
-          File.Delete(metadataItem.OrginalPath);
-        });
-        try
-        {
-          Task.WaitAll(task);
-        }
-        catch (Exception e)
-        {
-          MessageBox.Show(e.Message);
-        }
-      }
-    }
+  
+
+    
   }
 }

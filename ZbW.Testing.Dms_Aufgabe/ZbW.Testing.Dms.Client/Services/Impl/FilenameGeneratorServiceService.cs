@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZbW.Testing.Dms.Client.Services.Impl
 {
-  public class FilenameGenerator : IFilenameGenerator
+  public class FilenameGeneratorServiceService : IFilenameGeneratorService
   {
     public string GetContentFilename(Guid guid, string extension)
     {
