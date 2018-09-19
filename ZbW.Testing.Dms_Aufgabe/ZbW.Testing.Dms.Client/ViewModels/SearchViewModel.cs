@@ -132,9 +132,21 @@ namespace ZbW.Testing.Dms.Client.ViewModels
       var tempList = new List<IMetadataItem>();
       foreach (var m in FilteredMetadataItems)
       {
-        if (m.Bezeichnung.ToLower().Equals(Suchbegriff.ToLower()) || m.Stichwoerter.ToLower().Equals(Suchbegriff.ToLower()) || m.Typ.Equals(SelectedTypItem))
+        if (m.Stichwoerter != null)
         {
+          if (m.Bezeichnung.ToLower().Equals(Suchbegriff.ToLower()) ||
+              m.Stichwoerter.ToLower().Equals(Suchbegriff.ToLower()) || m.Typ.Equals(SelectedTypItem))
+          {
             tempList.Add(m);
+          }
+        }
+        else
+        {
+          if (m.Bezeichnung.ToLower().Equals(Suchbegriff.ToLower()) ||
+               m.Typ.Equals(SelectedTypItem))
+          {
+            tempList.Add(m);
+          }
         }
       }
       FilteredMetadataItems.Clear();
