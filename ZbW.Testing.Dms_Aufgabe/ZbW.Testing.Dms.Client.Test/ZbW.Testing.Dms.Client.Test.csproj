@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicesTests\FilenameGeneratorServiceTest.cs" />
     <Compile Include="ServicesTests\FileSystemServiceTest.cs" />
     <Compile Include="StubFactory\IMetaDataItemFactory.cs" />
   </ItemGroup>

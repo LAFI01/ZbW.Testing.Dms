@@ -10,12 +10,12 @@ namespace ZbW.Testing.Dms.Client.Services.Impl
   {
     public string GetContentFilename(Guid guid, string extension)
     {
-      return guid + "_Content" + extension;
+      return extension != null ? guid + "_Content" + extension : null;
     }
 
     public string GetMetadataFilename(Guid guid)
     {
-      return guid + "_Metadata" + ".xml";
+      return guid + "_Metadata.xml";
     }
   }
 }

@@ -75,9 +75,11 @@
     <Compile Include="Repositories\ComboBoxItems.cs" />
     <Compile Include="Services\IDirectoryService.cs" />
     <Compile Include="Services\IFilenameGeneratorService.cs" />
+    <Compile Include="Services\IGuidGeneratorService.cs" />
     <Compile Include="Services\Impl\DirectoryService.cs" />
     <Compile Include="Services\Impl\FilenameGeneratorServiceService.cs" />
     <Compile Include="Services\Impl\FileSystemService.cs" />
+    <Compile Include="Services\Impl\GuidGeneratorService.cs" />
     <Compile Include="Services\Impl\XmlService.cs" />
     <Compile Include="Services\IXmlService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

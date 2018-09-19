@@ -10,7 +10,7 @@ using ZbW.Testing.Dms.Client.Model;
 
 namespace ZbW.Testing.Dms.Client.Services.Impl
 {
-  public class XmlService : IXmlService
+  internal class XmlService : IXmlService
   {
     public void MetadataItemToXml(IMetadataItem metadataItem, string targetDir) { 
     var xmlSerializer = new XmlSerializer(typeof(MetadataItem));

@@ -17,25 +17,28 @@ namespace ZbW.Testing.Dms.Client.Services.Impl
       XmlService = new XmlService();
       FilenameGeneratorService = new FilenameGeneratorServiceService();
       DirectoryService = new DirectoryService();
+      GuidGeneratorService = new GuidGeneratorService();
     }
 
-    public FileSystemService(IXmlService xmlService, IFilenameGeneratorService filenameGeneratorService, IDirectoryService directoryService)
+    public FileSystemService(IXmlService xmlService, IFilenameGeneratorService filenameGeneratorService, IDirectoryService directoryService, IGuidGeneratorService guidGeneratorService)
     {
       XmlService = xmlService;
       FilenameGeneratorService = filenameGeneratorService;
       DirectoryService = directoryService;
+      GuidGeneratorService = guidGeneratorService;
     }
 
     private IXmlService XmlService { get; }
     private IFilenameGeneratorService FilenameGeneratorService { get; }
     private IDirectoryService DirectoryService { get; }
     private IMetadataItem MetaDataIteam { get; set; }
+    private IGuidGeneratorService GuidGeneratorService { get;  }
 
     public void AddFile(IMetadataItem metadataItem, bool isRemoveFileEnabled, string sourcePath)
     {
       MetaDataIteam = metadataItem;
 
-      var documentId = Guid.NewGuid();
+      var documentId = GuidGeneratorService.GetNewGuid();
       var extension = DirectoryService.GetExtension(sourcePath);
       MetaDataIteam.ContentFilename = FilenameGeneratorService.GetContentFilename(documentId, extension);
       MetaDataIteam.MetadataFilename = FilenameGeneratorService.GetMetadataFilename(documentId);
